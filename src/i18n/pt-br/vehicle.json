@@ -1,0 +1,7 @@
+{
+    "error": {
+        "already_exists_with_vin": "Já existe um veículo com este VIN",
+        "not_found": "Veículo não encontrado",
+        "not_found_vehicle_with_vin": "Não há veículo com este VIN"
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "error": {
+        "not_found": "User not found",
+        "already_exists": "User already exists",
+        "already_exists_with_login": "There is already a user with that login"
+    }
+}
