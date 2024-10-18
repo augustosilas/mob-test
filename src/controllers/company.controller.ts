@@ -16,10 +16,11 @@ import { RolesGuard } from '../security/guards/roles.guard';
 import { Roles } from '../security/role.decorator';
 import { RoleType } from '../security/role-type';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { UserMainGuard } from '../security/guards/user-main.guard';
 
 @Controller('companies')
 @ApiTags('Company')
-@UseGuards(AuthGuard, RolesGuard)
+@UseGuards(AuthGuard, RolesGuard, UserMainGuard)
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
   @ApiBearerAuth()

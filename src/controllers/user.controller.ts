@@ -19,8 +19,9 @@ import { RolesGuard } from '../security/guards/roles.guard';
 import { AuthUser } from '../security/user.decorator';
 import { User } from '../entities/user.entity';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { UserMainGuard } from '../security/guards/user-main.guard';
 
-@UseGuards(AuthGuard, RolesGuard)
+@UseGuards(AuthGuard, RolesGuard, UserMainGuard)
 @ApiTags('User')
 @Controller('users')
 export class UserController {
@@ -32,9 +33,10 @@ export class UserController {
   async create(
     @Body() body: UserCreateDTO,
     @Query('companyId') companyId: string,
+    @AuthUser() authUser: User,
   ) {
     const user = await this.userService.create({
-      companyId: +companyId,
+      companyId: !companyId ? authUser.companyId : +companyId,
       ...body,
     });
     return user;

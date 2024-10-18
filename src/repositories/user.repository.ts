@@ -39,7 +39,7 @@ export class UserRepository extends Repository<User> {
         name: true,
         createdAt: true,
       },
-      skip: dto.limit * dto.page,
+      skip: dto.limit * (dto.page - 1),
       take: dto.limit,
     });
     return users.map((user) => {

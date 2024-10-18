@@ -1,5 +1,6 @@
 {
     "error": {
-        "not_found": "Company not found"
+        "not_found": "Company not found",
+        "already_exists_with_number": "Company already exists with this phone number"
     }
 }

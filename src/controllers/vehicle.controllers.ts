@@ -22,8 +22,8 @@ import { AuthUser } from '../security/user.decorator';
 import { User } from '../entities/user.entity';
 import { BasicAuth } from '../security/guards/basic-auth.guard';
 import { ApiBasicAuth, ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { UserMainGuard } from '../security/guards/user-main.guard';
 
-@UseGuards(AuthGuard, RolesGuard)
 @Controller('vehicles')
 @ApiTags('Vehicle')
 export class VehicleControllers {
@@ -32,17 +32,22 @@ export class VehicleControllers {
   @ApiBearerAuth('Bearer')
   @Post()
   @Roles(RoleType.ADMIN)
-  async create(@Body() body: CreateVehicleDTO, @AuthUser() authUser: User) {
+  @UseGuards(AuthGuard, RolesGuard, UserMainGuard)
+  async create(
+    @Body() body: CreateVehicleDTO,
+    @AuthUser() authUser: User,
+    @Query('companyId') companyId: number,
+  ) {
     return this.vehicleService.create({
       ...body,
-      companyId: authUser.companyId,
+      companyId: !companyId ? authUser.companyId : +companyId,
     });
   }
 
   @ApiBearerAuth('Bearer')
   @Delete(':vehicleId')
   @Roles(RoleType.ADMIN)
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard, UserMainGuard)
   async delete(
     @AuthUser() authUser: User,
     @Param('vehicleId') vehicleId: number,
@@ -55,7 +60,7 @@ export class VehicleControllers {
 
   @ApiBearerAuth('Bearer')
   @Get('/findAll')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard, UserMainGuard)
   async findAll(@AuthUser() authUser: User, @Query() query: FindAllFilterDTO) {
     return this.vehicleService.findAll({
       companyId: authUser.companyId,
@@ -66,7 +71,7 @@ export class VehicleControllers {
 
   @ApiBearerAuth('Bearer')
   @Get(':vehicleId')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard, UserMainGuard)
   async findById(@Param('vehicleId') vehicleId: number) {
     return this.vehicleService.findById(+vehicleId);
   }
@@ -81,7 +86,7 @@ export class VehicleControllers {
   @ApiBearerAuth('Bearer')
   @Patch(':vehicleId')
   @Roles(RoleType.ADMIN)
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard, UserMainGuard)
   async update(
     @Body() body: UpdateVehicleDTO,
     @Param('vehicleId') vehicleId: number,
