@@ -26,6 +26,10 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Possíveis ajustes e melhorias
+ - Integrar veiculo corretamente, usando retentativas. Implementar fila;
+ - Ajustar lógica do uso da companyId
+
 ## Installation
 
 ```bash
